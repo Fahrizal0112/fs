@@ -19,7 +19,13 @@ dan pasti muncul di browser manapun.
 index.html       # markup halaman (hero, timeline, countdown, surat)
 src/main.js      # logic: countdown, reveal on scroll, galaksi partikel + model hati 3D (Three.js)
 src/style.css    # semua styling
+src/photos/      # 5 foto yang sudah dipilih & dioptimasi, dipakai di tiap section timeline
 ```
+
+Folder `src/image/` (kalau ada di komputer kamu) itu tempat naruh foto mentah asli (HEIC/JPG,
+ukuran besar) — sengaja di-gitignore, nggak ikut ke-commit. Kalau mau ganti salah satu foto di
+`src/photos/`, tinggal proses foto barunya (convert HEIC → JPG kalau perlu, resize ke maksimal
+~1400px sisi terpanjang) lalu timpa file yang sesuai di `src/photos/`.
 
 ## Menjalankan di lokal
 

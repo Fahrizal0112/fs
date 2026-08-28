@@ -184,7 +184,7 @@
   }
 
   .photo-frame {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 4;
     border: 1.5px dashed rgba(232, 192, 125, 0.45);
     border-radius: 12px;
     background: linear-gradient(160deg, rgba(185, 166, 224, 0.12), rgba(242, 182, 198, 0.08));
@@ -196,7 +196,30 @@
     margin-bottom: 1.2rem;
     color: var(--muted);
     font-size: 0.88rem;
+    position: relative;
+    overflow: hidden;
   }
+
+  .photo-frame:has(img) {
+    border-style: solid;
+    border-color: var(--card-border);
+    background: var(--void-2);
+    padding: 0;
+  }
+
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+  }
+
+  #photo-meet img { object-position: 54% 50%; }
+  #photo-closer img { object-position: 50% 58%; }
+  #photo-jadian img { object-position: 45% 45%; }
+  #photo-funny img { object-position: 50% 28%; }
+  #photo-now img { object-position: 50% 30%; }
 
   /* ---------- scroll-driven reveal for content cards ---------- */
   .scene:not(.hero) .card { opacity: 1; transform: none; }

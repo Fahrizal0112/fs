@@ -1,3 +1,8 @@
 node_modules
 dist
 .DS_Store
+
+# folder tempat naruh foto mentah (HEIC/JPG asli) — cuma dipakai buat sumber pilihan foto,
+# nggak perlu ikut ke-commit (ukurannya besar & formatnya belum web-friendly).
+# Foto yang sudah dipilih & dioptimasi ada di src/photos/.
+src/image
