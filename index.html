@@ -69,9 +69,18 @@
     </div>
   </section>
 
+  <section class="scene gallery-scene" id="gallery">
+    <div class="card center gallery-card">
+      <p class="tag">06 — Galeri Kenangan</p>
+      <h2>Semua Momen Kita</h2>
+      <p class="story" style="margin-inline:auto;">Dari pertama ketemu sampai sekarang — semua foto, disusun dari yang paling lama. Klik buat lihat lebih besar.</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </section>
+
   <section class="scene countdown-scene" id="countdown-section">
     <div class="card center">
-      <p class="tag">06 — Penantian</p>
+      <p class="tag">07 — Penantian</p>
       <h2>Menuju Satu Tahun Kita</h2>
       <p class="story" style="margin-inline:auto;">29 November 2026 nanti, genap satu tahun perjalanan Fahrizal &amp; Salsa. Hitung mundurnya:</p>
       <div class="countdown" id="countdown">
@@ -86,7 +95,7 @@
 
   <section class="scene letter-scene" id="letter">
     <div class="card center letter-card">
-      <p class="tag">07 — Untuk Salsa</p>
+      <p class="tag">08 — Untuk Salsa</p>
       <h2>Surat Kecil</h2>
       <div class="letter-body">
         <p>Sal,</p>
@@ -104,6 +113,17 @@
   <p class="footer-line">Dari sini, ceritanya masih terus berlanjut…</p>
   <p class="footer-sub">dibuat dengan ❤ oleh Fahrizal, untuk Salsa</p>
 </footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Foto sebelumnya">‹</button>
+  <figure class="lightbox-figure">
+    <img class="lightbox-img" id="lightboxImg" alt="" />
+    <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+  </figure>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Foto berikutnya">›</button>
+</div>
+
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

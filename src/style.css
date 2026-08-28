@@ -303,6 +303,115 @@
     text-align: right;
   }
 
+  /* ---------- gallery ---------- */
+  .gallery-card { max-width: 56rem; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  .gallery-thumb {
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    background: var(--void-2);
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  .gallery-thumb:hover img,
+  .gallery-thumb:focus-visible img {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-thumb img { transition: none; }
+    .gallery-thumb:hover img, .gallery-thumb:focus-visible img { transform: none; }
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(6, 6, 16, 0.94);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    max-width: 90vw;
+  }
+
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox-caption {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .lightbox-close,
+  .lightbox-nav {
+    position: absolute;
+    background: rgba(247, 241, 232, 0.08);
+    border: 1px solid var(--card-border);
+    color: var(--cream);
+    border-radius: 999px;
+    width: 2.6rem;
+    height: 2.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-nav:hover {
+    background: rgba(247, 241, 232, 0.16);
+  }
+
+  .lightbox-close { top: 1.2rem; right: 1.2rem; }
+  .lightbox-prev { left: 1.2rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-next { right: 1.2rem; top: 50%; transform: translateY(-50%); }
+
+  @media (max-width: 640px) {
+    .lightbox-prev { left: 0.5rem; }
+    .lightbox-next { right: 0.5rem; }
+    .lightbox { padding: 1rem; }
+  }
+
   /* ---------- footer ---------- */
   .footer-scene {
     flex-direction: column;

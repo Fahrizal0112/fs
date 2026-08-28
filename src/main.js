@@ -1,11 +1,86 @@
 import * as THREE from "three";
 import "./style.css";
+import galleryManifest from "./gallery-manifest.json";
+
+var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: "default" });
 
 (function () {
   "use strict";
 
   var JADIAN_DATE = "2025-11-29T00:00:00+07:00";
   var TARGET_ANNIV = "2026-11-29T00:00:00+07:00";
+
+  /* ---------- gallery: render all photos + lightbox viewer ---------- */
+  var galleryPhotos = galleryManifest.map(function (entry) {
+    return { src: galleryModules["./gallery/" + entry.file], label: entry.label };
+  });
+
+  function initGallery() {
+    var grid = document.getElementById("galleryGrid");
+    if (!grid) return;
+
+    galleryPhotos.forEach(function (photo, index) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "gallery-thumb";
+      btn.setAttribute("aria-label", "Buka foto " + (photo.label || index + 1));
+      var img = document.createElement("img");
+      img.src = photo.src;
+      img.alt = "";
+      img.loading = "lazy";
+      btn.appendChild(img);
+      btn.addEventListener("click", function () { openLightbox(index); });
+      grid.appendChild(btn);
+    });
+
+    var lightbox = document.getElementById("lightbox");
+    var lightboxImg = document.getElementById("lightboxImg");
+    var lightboxCaption = document.getElementById("lightboxCaption");
+    var closeBtn = document.getElementById("lightboxClose");
+    var prevBtn = document.getElementById("lightboxPrev");
+    var nextBtn = document.getElementById("lightboxNext");
+    var currentIndex = 0;
+
+    function showAt(index) {
+      currentIndex = (index + galleryPhotos.length) % galleryPhotos.length;
+      var photo = galleryPhotos[currentIndex];
+      lightboxImg.src = photo.src;
+      lightboxImg.alt = photo.label ? "Foto tanggal " + photo.label : "Foto kenangan";
+      lightboxCaption.textContent = photo.label || "";
+    }
+
+    function openLightbox(index) {
+      showAt(index);
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    prevBtn.addEventListener("click", function () { showAt(currentIndex - 1); });
+    nextBtn.addEventListener("click", function () { showAt(currentIndex + 1); });
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (!lightbox.classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      else if (e.key === "ArrowLeft") showAt(currentIndex - 1);
+      else if (e.key === "ArrowRight") showAt(currentIndex + 1);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGallery);
+  } else {
+    initGallery();
+  }
 
   function pad(n) { return String(n).padStart(2, "0"); }
 
@@ -227,11 +302,12 @@ import "./style.css";
     makeHeart(N, 0.145, true),                                        // 3 jadian
     makeBurst(N),                                                     // 4 momen berkesan
     makeInfinity(N),                                                  // 5 sekarang
-    makeHeart(N, 0.17, false),                                        // 6 countdown
-    makeHeart(N, 0.17, false)                                         // 7 surat
+    makeInfinity(N),                                                  // 6 galeri kenangan
+    makeHeart(N, 0.17, false),                                        // 7 countdown
+    makeHeart(N, 0.17, false)                                         // 8 surat
   ];
 
-  var shapeColorHex = [0x9fb4ff, 0xb9a6e0, 0xd9a8c9, 0xf2b6c6, 0xe8c07d, 0xcf9fd0, 0xf7c9d6, 0xf7c9d6];
+  var shapeColorHex = [0x9fb4ff, 0xb9a6e0, 0xd9a8c9, 0xf2b6c6, 0xe8c07d, 0xcf9fd0, 0xcf9fd0, 0xf7c9d6, 0xf7c9d6];
   var shapeColors = shapeColorHex.map(function (h) { return new THREE.Color(h); });
 
   var geometry = new THREE.BufferGeometry();
