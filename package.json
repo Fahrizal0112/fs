@@ -1,0 +1,18 @@
+{
+  "name": "fahrizal-salsa-aniv",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "0.128.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10",
+    "vite-plugin-singlefile": "^2.0.3"
+  }
+}
