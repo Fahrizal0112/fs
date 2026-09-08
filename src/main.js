@@ -19,6 +19,9 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
 
   function toArray(nodeList) { return Array.prototype.slice.call(nodeList || []); }
 
+  /* ---------- everything below only runs once the site is actually unlocked ---------- */
+  function initSite() {
+
   /* ---------- gallery: render all photos + lightbox viewer ---------- */
   var galleryPhotos = galleryManifest.map(function (entry) {
     return { src: galleryModules["./gallery/" + entry.file], label: entry.label };
@@ -648,6 +651,61 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     (function loop() {
       render(true);
       requestAnimationFrame(loop);
+    })();
+  }
+  } // end initSite()
+
+  /* ---------- H-1 lock: site stays closed until the day before the anniversary ----------
+     Add ?dev=1 to the URL to bypass the lock while building/testing. */
+  var UNLOCK_DATE = "2026-11-28T00:00:00+07:00";
+
+  function hasDevBypass() {
+    try {
+      return new URLSearchParams(window.location.search).get("dev") === "1";
+    } catch (e) { return false; }
+  }
+
+  function isUnlocked() {
+    return hasDevBypass() || new Date() >= new Date(UNLOCK_DATE);
+  }
+
+  function unlockSite() {
+    document.documentElement.classList.add("unlocked");
+    document.documentElement.classList.remove("locked");
+    initSite();
+  }
+
+  if (isUnlocked()) {
+    unlockSite();
+  } else {
+    document.documentElement.classList.add("locked");
+    (function tickLock() {
+      var target = new Date(UNLOCK_DATE);
+      var timer;
+
+      function paint() {
+        if (isUnlocked()) {
+          clearInterval(timer);
+          unlockSite();
+          return;
+        }
+        var diff = target - new Date();
+        var days = Math.floor(diff / 86400000); diff -= days * 86400000;
+        var hours = Math.floor(diff / 3600000); diff -= hours * 3600000;
+        var mins = Math.floor(diff / 60000); diff -= mins * 60000;
+        var secs = Math.floor(diff / 1000);
+        var elD = document.getElementById("lock-days");
+        var elH = document.getElementById("lock-hours");
+        var elM = document.getElementById("lock-mins");
+        var elS = document.getElementById("lock-secs");
+        if (elD) elD.textContent = String(days).padStart(2, "0");
+        if (elH) elH.textContent = String(hours).padStart(2, "0");
+        if (elM) elM.textContent = String(mins).padStart(2, "0");
+        if (elS) elS.textContent = String(secs).padStart(2, "0");
+      }
+
+      timer = setInterval(paint, 1000);
+      paint();
     })();
   }
 })();

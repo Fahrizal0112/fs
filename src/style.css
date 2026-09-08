@@ -66,6 +66,56 @@
 
   main, footer.footer-scene { position: relative; z-index: 2; }
 
+  /* ---------- H-1 lock: hidden by default (safe default), JS reveals it ---------- */
+  main, footer.footer-scene { display: none; }
+  html.unlocked main, html.unlocked footer.footer-scene { display: block; }
+
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6vw;
+    text-align: center;
+  }
+
+  html.unlocked .lock-screen { display: none; }
+
+  .lock-inner { max-width: 30rem; }
+
+  .lock-heart {
+    font-size: 2.6rem;
+    color: var(--rose-bright);
+    margin: 0.6rem 0 1rem;
+    animation: lock-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes lock-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .lock-title {
+    font-family: "Fraunces", ui-serif, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    margin: 0 0 1rem;
+  }
+
+  .lock-message {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin: 0 0 1.8rem;
+  }
+
+  .lock-message strong { color: var(--rose-bright); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lock-heart { animation: none; }
+  }
+
   .scene {
     min-height: 100svh;
     display: flex;
