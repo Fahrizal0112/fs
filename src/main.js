@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { animate, createTimeline, stagger } from "animejs";
 import "./style.css";
 import galleryManifest from "./gallery-manifest.json";
 
@@ -9,6 +10,14 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
 
   var JADIAN_DATE = "2025-11-29T00:00:00+07:00";
   var TARGET_ANNIV = "2026-11-29T00:00:00+07:00";
+
+  /* ---------- shared motion preference, used by every animated bit below ---------- */
+  var reducedMotion = false;
+  try {
+    reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) { reducedMotion = false; }
+
+  function toArray(nodeList) { return Array.prototype.slice.call(nodeList || []); }
 
   /* ---------- gallery: render all photos + lightbox viewer ---------- */
   var galleryPhotos = galleryManifest.map(function (entry) {
@@ -34,6 +43,7 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     });
 
     var lightbox = document.getElementById("lightbox");
+    var lightboxFigure = lightbox.querySelector(".lightbox-figure");
     var lightboxImg = document.getElementById("lightboxImg");
     var lightboxCaption = document.getElementById("lightboxCaption");
     var closeBtn = document.getElementById("lightboxClose");
@@ -41,38 +51,75 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     var nextBtn = document.getElementById("lightboxNext");
     var currentIndex = 0;
 
-    function showAt(index) {
-      currentIndex = (index + galleryPhotos.length) % galleryPhotos.length;
-      var photo = galleryPhotos[currentIndex];
+    function applyPhoto(photo) {
       lightboxImg.src = photo.src;
       lightboxImg.alt = photo.label ? "Foto tanggal " + photo.label : "Foto kenangan";
       lightboxCaption.textContent = photo.label || "";
     }
 
+    // crossfade between photos when navigating prev/next inside an already-open lightbox
+    function showAt(index, animateSwap) {
+      currentIndex = (index + galleryPhotos.length) % galleryPhotos.length;
+      var photo = galleryPhotos[currentIndex];
+      if (animateSwap && !reducedMotion) {
+        animate(lightboxImg, {
+          opacity: [1, 0.12],
+          duration: 130,
+          ease: "inQuad",
+          onComplete: function () {
+            applyPhoto(photo);
+            animate(lightboxImg, { opacity: [0.12, 1], duration: 240, ease: "outQuad" });
+          }
+        });
+      } else {
+        applyPhoto(photo);
+      }
+    }
+
     function openLightbox(index) {
-      showAt(index);
+      showAt(index, false);
       lightbox.classList.add("open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      if (reducedMotion) {
+        lightbox.style.opacity = "";
+        lightboxFigure.style.opacity = "";
+        lightboxFigure.style.transform = "";
+      } else {
+        animate(lightbox, { opacity: [0, 1], duration: 200, ease: "linear" });
+        animate(lightboxFigure, { opacity: [0, 1], scale: [0.86, 1], duration: 420, ease: "outBack(1.7)" });
+      }
     }
 
-    function closeLightbox() {
+    function finalizeClose() {
       lightbox.classList.remove("open");
       lightbox.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
+      lightbox.style.opacity = "";
+      lightboxFigure.style.opacity = "";
+      lightboxFigure.style.transform = "";
+    }
+
+    function closeLightbox() {
+      if (reducedMotion) {
+        finalizeClose();
+        return;
+      }
+      animate(lightboxFigure, { opacity: [1, 0], scale: [1, 0.92], duration: 220, ease: "inQuad" });
+      animate(lightbox, { opacity: [1, 0], duration: 260, ease: "linear", onComplete: finalizeClose });
     }
 
     closeBtn.addEventListener("click", closeLightbox);
-    prevBtn.addEventListener("click", function () { showAt(currentIndex - 1); });
-    nextBtn.addEventListener("click", function () { showAt(currentIndex + 1); });
+    prevBtn.addEventListener("click", function () { showAt(currentIndex - 1, true); });
+    nextBtn.addEventListener("click", function () { showAt(currentIndex + 1, true); });
     lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) closeLightbox();
     });
     document.addEventListener("keydown", function (e) {
       if (!lightbox.classList.contains("open")) return;
       if (e.key === "Escape") closeLightbox();
-      else if (e.key === "ArrowLeft") showAt(currentIndex - 1);
-      else if (e.key === "ArrowRight") showAt(currentIndex + 1);
+      else if (e.key === "ArrowLeft") showAt(currentIndex - 1, true);
+      else if (e.key === "ArrowRight") showAt(currentIndex + 1, true);
     });
   }
 
@@ -83,6 +130,20 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
   }
 
   function pad(n) { return String(n).padStart(2, "0"); }
+
+  /* ---------- countdown digits give a small pop whenever they actually change ---------- */
+  var cdPrev = { d: null, h: null, m: null, s: null };
+  function bumpDigit(el, key, text, big) {
+    if (!el) return;
+    var changed = cdPrev[key] !== null && cdPrev[key] !== text;
+    el.textContent = text;
+    cdPrev[key] = text;
+    if (changed && !reducedMotion) {
+      animate(el, big
+        ? { scale: [1, 1.26, 1], duration: 460, ease: "outBack(2.2)" }
+        : { scale: [1, 1.1, 1], duration: 240, ease: "outQuad" });
+    }
+  }
 
   function updateDayCount() {
     var start = new Date(JADIAN_DATE);
@@ -105,20 +166,20 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     var s = document.getElementById("cd-secs");
     if (diff <= 0) {
       if (section) section.classList.add("arrived");
-      if (d) d.textContent = "00";
-      if (h) h.textContent = "00";
-      if (m) m.textContent = "00";
-      if (s) s.textContent = "00";
+      bumpDigit(d, "d", "00", false);
+      bumpDigit(h, "h", "00", false);
+      bumpDigit(m, "m", "00", false);
+      bumpDigit(s, "s", "00", false);
       return;
     }
     var days = Math.floor(diff / 86400000); diff -= days * 86400000;
     var hours = Math.floor(diff / 3600000); diff -= hours * 3600000;
     var mins = Math.floor(diff / 60000); diff -= mins * 60000;
     var secs = Math.floor(diff / 1000);
-    if (d) d.textContent = pad(days);
-    if (h) h.textContent = pad(hours);
-    if (m) m.textContent = pad(mins);
-    if (s) s.textContent = pad(secs);
+    bumpDigit(d, "d", pad(days), true);
+    bumpDigit(h, "h", pad(hours), true);
+    bumpDigit(m, "m", pad(mins), true);
+    bumpDigit(s, "s", pad(secs), false);
   }
 
   updateDayCount();
@@ -150,12 +211,120 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     }
   }
 
-  /* ---------- 3D starfield / galaxy that morphs shape as the page scrolls ---------- */
-  var reducedMotion = false;
+  /* ---------- anime.js entrance choreography ----------
+     Splits headings into words and orchestrates a per-section timeline
+     (tag -> heading -> photo -> copy -> extras) that plays once as each
+     card scrolls into view, on top of the CSS reveal above. Wrapped in a
+     try/catch that falls back to "just show everything" so a library
+     hiccup can never leave the page stuck invisible. */
   try {
-    reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  } catch (e) { reducedMotion = false; }
+    if (!reducedMotion) {
+      function splitWords(el) {
+        if (!el || el.dataset.split === "1") return;
+        var nodes = toArray(el.childNodes);
+        var frag = document.createDocumentFragment();
+        nodes.forEach(function (node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent.split(/(\s+)/).forEach(function (part) {
+              if (part === "") return;
+              if (/^\s+$/.test(part)) {
+                frag.appendChild(document.createTextNode(part));
+              } else {
+                var span = document.createElement("span");
+                span.className = "word";
+                span.textContent = part;
+                frag.appendChild(span);
+              }
+            });
+          } else {
+            var wrap = document.createElement("span");
+            wrap.className = "word";
+            wrap.appendChild(node.cloneNode(true));
+            frag.appendChild(wrap);
+          }
+        });
+        el.textContent = "";
+        el.appendChild(frag);
+        el.dataset.split = "1";
+      }
 
+      function gridColumnCount(grid) {
+        if (!grid) return 1;
+        try {
+          var cols = getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean);
+          return Math.max(1, cols.length);
+        } catch (e) { return 1; }
+      }
+
+      // hero: plays once, immediately
+      (function revealHero() {
+        var heroInner = document.querySelector(".hero-inner");
+        if (!heroInner) return;
+        var namesEl = heroInner.querySelector(".names");
+        splitWords(namesEl);
+        var words = namesEl ? namesEl.querySelectorAll(".word") : [];
+        createTimeline({ defaults: { ease: "outExpo" } })
+          .add(".hero .eyebrow", { opacity: [0, 1], translateY: [12, 0], duration: 650 })
+          .add(words, { opacity: [0, 1], translateY: [28, 0], rotateZ: [5, -1], duration: 900, delay: stagger(70) }, "-=380")
+          .add(".hero .since", { opacity: [0, 1], translateY: [12, 0], duration: 650 }, "-=480")
+          .add(".hero .daycount", { opacity: [0, 1], duration: 550 }, "-=380")
+          .add(".hero .scroll-hint", { opacity: [0, 1], translateY: [10, 0], duration: 550 }, "-=280");
+      })();
+
+      // every other section: plays once, the first time it enters the viewport
+      function revealCard(card) {
+        var tag = card.querySelector(".tag");
+        var heading = card.querySelector("h2");
+        splitWords(heading);
+        var words = heading ? heading.querySelectorAll(".word") : [];
+        var photo = card.querySelector(".photo-frame");
+        var story = card.querySelector(".story");
+        var letterParas = card.querySelectorAll(".letter-body p");
+        var cdUnits = card.querySelectorAll(".cd-unit");
+        var galleryGrid = card.querySelector("#galleryGrid");
+        var thumbs = galleryGrid ? galleryGrid.querySelectorAll(".gallery-thumb") : [];
+
+        var tl = createTimeline({ defaults: { ease: "outQuart" } });
+
+        if (tag) tl.add(tag, { opacity: [0, 1], translateX: [-18, 0], duration: 520 });
+        if (words.length) tl.add(words, { opacity: [0, 1], translateY: [22, 0], rotateZ: [3, 0], duration: 640, delay: stagger(45) }, tag ? "-=340" : 0);
+        if (photo) tl.add(photo, { opacity: [0, 1], scale: [0.93, 1], duration: 760, ease: "outExpo" }, "-=340");
+        if (story) tl.add(story, { opacity: [0, 1], translateY: [16, 0], duration: 620 }, "-=420");
+        if (letterParas.length) tl.add(letterParas, { opacity: [0, 1], translateY: [14, 0], duration: 560, delay: stagger(130) }, "-=280");
+        if (cdUnits.length) tl.add(cdUnits, { opacity: [0, 1], translateY: [18, 0], scale: [0.82, 1], duration: 560, delay: stagger(90, { from: "center" }) }, "-=260");
+        if (thumbs.length) {
+          var cols = gridColumnCount(galleryGrid);
+          tl.add(thumbs, {
+            opacity: [0, 1],
+            scale: [0.5, 1],
+            duration: 520,
+            delay: stagger(16, { grid: [cols, Math.ceil(thumbs.length / cols)], from: "center" })
+          }, "-=260");
+        }
+      }
+
+      var sectionCards = document.querySelectorAll(".scene:not(.hero) .card");
+      sectionCards.forEach(function (card) { splitWords(card.querySelector("h2")); });
+
+      if ("IntersectionObserver" in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              revealCard(entry.target);
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.28 });
+        sectionCards.forEach(function (card) { revealObserver.observe(card); });
+      } else {
+        document.documentElement.classList.add("anime-fallback");
+      }
+    }
+  } catch (e) {
+    document.documentElement.classList.add("anime-fallback");
+  }
+
+  /* ---------- 3D starfield / galaxy that morphs shape as the page scrolls ---------- */
   var webglAvailable = false;
   try {
     var testCanvas = document.createElement("canvas");

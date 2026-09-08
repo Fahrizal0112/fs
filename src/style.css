@@ -253,6 +253,68 @@
     }
   }
 
+  /* ---------- anime.js choreography: initial hidden state ----------
+     Only applied once JS has tagged <html class="js">, so anime.js can
+     take over the entrance from here. Everything degrades to fully
+     visible if JS never runs or if the user asked for less motion. */
+  .js .hero-inner > .eyebrow,
+  .js .hero-inner > .since,
+  .js .hero-inner > .daycount,
+  .js .hero-inner > .scroll-hint,
+  .js .card .tag,
+  .js .card h2 .word,
+  .js .card .photo-frame,
+  .js .card > .story,
+  .js .letter-body p,
+  .js .cd-unit,
+  .js .gallery-thumb {
+    opacity: 0;
+  }
+
+  .names .word,
+  .card h2 .word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .hero-inner > .eyebrow,
+    .js .hero-inner > .since,
+    .js .hero-inner > .daycount,
+    .js .hero-inner > .scroll-hint,
+    .js .card .tag,
+    .js .card h2 .word,
+    .js .card .photo-frame,
+    .js .card > .story,
+    .js .letter-body p,
+    .js .cd-unit,
+    .js .gallery-thumb {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  .lightbox-figure { opacity: 1; }
+  .cd-num { display: inline-block; }
+
+  /* safety net: if anime.js ever fails to init, force everything visible
+     instead of leaving the page stuck hidden */
+  .anime-fallback .hero-inner > .eyebrow,
+  .anime-fallback .hero-inner > .since,
+  .anime-fallback .hero-inner > .daycount,
+  .anime-fallback .hero-inner > .scroll-hint,
+  .anime-fallback .names .word,
+  .anime-fallback .card .tag,
+  .anime-fallback .card h2 .word,
+  .anime-fallback .card .photo-frame,
+  .anime-fallback .card > .story,
+  .anime-fallback .letter-body p,
+  .anime-fallback .cd-unit,
+  .anime-fallback .gallery-thumb {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   /* ---------- countdown ---------- */
   .countdown {
     display: flex;
