@@ -360,44 +360,65 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     var ctx = c.getContext("2d");
     var g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
     g.addColorStop(0, "rgba(255,255,255,1)");
-    g.addColorStop(0.4, "rgba(255,255,255,0.7)");
+    g.addColorStop(0.2, "rgba(255,255,255,0.92)");
+    g.addColorStop(0.5, "rgba(245,230,200,0.35)");
     g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, size, size);
     return new THREE.CanvasTexture(c);
   }
 
-  function heartPoint(t) {
-    var x = 16 * Math.pow(Math.sin(t), 3);
-    var y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-    return { x: x, y: y };
-  }
-
-  function makeHeart(n, scale, fill) {
+  function makeSpiralGalaxy(n) {
     var arr = new Float32Array(n * 3);
+    var arms = 2;
     for (var i = 0; i < n; i++) {
-      var t = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.03;
-      var p = heartPoint(t);
-      var r = fill ? 0.9 + Math.random() * 0.22 : 0.98 + Math.random() * 0.06;
-      arr[i * 3] = p.x * scale * r;
-      arr[i * 3 + 1] = p.y * scale * r;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.55;
+      var arm = i % arms;
+      var dist = Math.pow(Math.random(), 0.75) * 4.4 + 0.2;
+      var angle = dist * 1.6 + arm * Math.PI + (Math.random() - 0.5) * 0.38;
+      var r = 0.95 + Math.random() * 0.1;
+      arr[i * 3] = Math.cos(angle) * dist * r;
+      arr[i * 3 + 1] = Math.sin(angle) * dist * 0.78 * r;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * (0.85 / (dist * 0.45 + 0.8));
     }
     return arr;
   }
 
-  function makeInfinity(n) {
+  function makeOrbitalRing(n) {
     var arr = new Float32Array(n * 3);
-    var a = 3.3;
     for (var i = 0; i < n; i++) {
-      var t = (i / n) * Math.PI * 2;
-      var denom = 1 + Math.sin(t) * Math.sin(t);
-      var x = (a * Math.cos(t)) / denom;
-      var y = (a * Math.sin(t) * Math.cos(t)) / denom;
-      var r = 0.92 + Math.random() * 0.18;
-      arr[i * 3] = x * r;
-      arr[i * 3 + 1] = y * r * 1.15;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.6;
+      var angle = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.05;
+      var radius = i % 2 === 0 ? 3.2 : 2.4;
+      var jitter = 0.94 + Math.random() * 0.12;
+      arr[i * 3] = Math.cos(angle) * radius * jitter;
+      arr[i * 3 + 1] = Math.sin(angle) * radius * 0.65 * jitter;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
+    }
+    return arr;
+  }
+
+  function makeConstellationField(n) {
+    var arr = new Float32Array(n * 3);
+    for (var i = 0; i < n; i++) {
+      var theta = (i / n) * Math.PI * 2 * 7;
+      var phi = Math.acos(2 * (i / n) - 1);
+      var r = 3.6 + Math.random() * 1.6;
+      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.75;
+      arr[i * 3 + 2] = r * Math.cos(phi) * 0.6;
+    }
+    return arr;
+  }
+
+  function makeRadiantCore(n) {
+    var arr = new Float32Array(n * 3);
+    for (var i = 0; i < n; i++) {
+      var u = Math.random(), v = Math.random();
+      var theta = u * Math.PI * 2;
+      var phi = Math.acos(2 * v - 1);
+      var r = Math.pow(Math.random(), 1.8) * 3.2 + 0.3;
+      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.85;
+      arr[i * 3 + 2] = r * Math.cos(phi) * 0.7;
     }
     return arr;
   }
@@ -468,18 +489,18 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
   }
 
   var shapePositions = [
-    makeScatter(N),                                                   // 0 hero
-    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 first met
-    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 growing closer
-    makeHeart(N, 0.145, true),                                        // 3 officially together
-    makeBurst(N),                                                     // 4 memorable moment
-    makeInfinity(N),                                                  // 5 present day
-    makeInfinity(N),                                                  // 6 memory gallery
-    makeHeart(N, 0.17, false),                                        // 7 countdown
-    makeHeart(N, 0.17, false)                                         // 8 letter
+    makeScatter(N),                                                   // 0 hero: deep cosmos
+    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 first met: dual star clusters
+    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 growing closer: cosmic bridge
+    makeSpiralGalaxy(N),                                              // 3 officially together: spiral galaxy
+    makeBurst(N),                                                     // 4 memorable moment: stellar sparkle
+    makeOrbitalRing(N),                                               // 5 present day: celestial orbit
+    makeConstellationField(N),                                        // 6 memory gallery: constellation field
+    makeRadiantCore(N),                                               // 7 countdown: radiant core
+    makeRadiantCore(N)                                                // 8 letter: warm starlight canopy
   ];
 
-  var shapeColorHex = [0x9fb4ff, 0xb9a6e0, 0xd9a8c9, 0xf2b6c6, 0xe8c07d, 0xcf9fd0, 0xcf9fd0, 0xf7c9d6, 0xf7c9d6];
+  var shapeColorHex = [0xd4deee, 0xc2d0ea, 0xd0c5e2, 0xdfb77c, 0xf6deaa, 0xdfb77c, 0xc8bed8, 0xecd5ab, 0xf2dfc0];
   var shapeColors = shapeColorHex.map(function (h) { return new THREE.Color(h); });
 
   var geometry = new THREE.BufferGeometry();
@@ -501,63 +522,80 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
   points.renderOrder = 1;
   scene.add(points);
 
-  /* ---------- the 3D model: a lit, glossy heart mesh that grows through the story ---------- */
-  var ambientLight = new THREE.AmbientLight(0x554a7a, 1.0);
+  /* ---------- the 3D model: celestial astrolabe with starlight core & orbital rings ---------- */
+  var ambientLight = new THREE.AmbientLight(0x403856, 1.2);
   scene.add(ambientLight);
 
-  var keyLight = new THREE.PointLight(0xe8c07d, 2.1, 30, 2);
-  keyLight.position.set(3.2, 3.6, 5);
+  var keyLight = new THREE.PointLight(0xdfb77c, 2.4, 32, 2);
+  keyLight.position.set(3.5, 3.8, 5.2);
   scene.add(keyLight);
 
-  var rimLight = new THREE.PointLight(0xb9a6e0, 1.3, 30, 2);
-  rimLight.position.set(-4, -2.2, 3);
+  var rimLight = new THREE.PointLight(0xa59ac8, 1.5, 32, 2);
+  rimLight.position.set(-4.2, -2.5, 3.2);
   scene.add(rimLight);
 
-  function heartOutline2D() {
-    var shape = new THREE.Shape();
-    var x = 0, y = 0;
-    shape.moveTo(x + 0.25, y + 0.25);
-    shape.bezierCurveTo(x + 0.25, y + 0.25, x + 0.2, y, x, y);
-    shape.bezierCurveTo(x - 0.3, y, x - 0.3, y + 0.35, x - 0.3, y + 0.35);
-    shape.bezierCurveTo(x - 0.3, y + 0.55, x - 0.1, y + 0.77, x + 0.25, y + 0.95);
-    shape.bezierCurveTo(x + 0.6, y + 0.77, x + 0.8, y + 0.55, x + 0.8, y + 0.35);
-    shape.bezierCurveTo(x + 0.8, y + 0.35, x + 0.8, y, x + 0.5, y);
-    shape.bezierCurveTo(x + 0.35, y, x + 0.25, y + 0.25, x + 0.25, y + 0.25);
-    return shape;
-  }
+  var celestialGroup = new THREE.Group();
+  var coreMesh = null;
+  var ringOuter = null;
+  var ringInner = null;
 
-  var heartMesh = null;
   try {
-    var heartGeo = new THREE.ExtrudeGeometry(heartOutline2D(), {
-      depth: 0.32,
-      bevelEnabled: true,
-      bevelSegments: 6,
-      steps: 2,
-      bevelSize: 0.06,
-      bevelThickness: 0.06,
-      curveSegments: 24
-    });
-    heartGeo.center();
-    heartGeo.rotateZ(Math.PI);
-    heartGeo.scale(2.5, 2.5, 2.5);
-
-    var heartMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xf2b6c6,
-      emissive: 0x3a1020,
-      emissiveIntensity: 0.3,
-      metalness: 0.2,
-      roughness: 0.26,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.3,
+    // 1. Central luminous starlight core
+    var coreGeo = new THREE.IcosahedronGeometry(0.75, 3);
+    var coreMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xdfb77c,
+      emissive: 0x422f12,
+      emissiveIntensity: 0.5,
+      metalness: 0.72,
+      roughness: 0.22,
+      clearcoat: 0.95,
+      clearcoatRoughness: 0.18,
       transparent: true,
       opacity: 0
     });
+    coreMesh = new THREE.Mesh(coreGeo, coreMaterial);
+    coreMesh.renderOrder = 0;
+    celestialGroup.add(coreMesh);
 
-    heartMesh = new THREE.Mesh(heartGeo, heartMaterial);
-    heartMesh.renderOrder = 0;
-    heartMesh.scale.setScalar(0.001);
-    scene.add(heartMesh);
-  } catch (e) { heartMesh = null; }
+    // 2. Outer slender orbital ring
+    var outerRingGeo = new THREE.TorusGeometry(2.05, 0.018, 16, 120);
+    var ringMat1 = new THREE.MeshPhysicalMaterial({
+      color: 0xebd0d7,
+      emissive: 0x221319,
+      emissiveIntensity: 0.35,
+      metalness: 0.9,
+      roughness: 0.18,
+      clearcoat: 1,
+      transparent: true,
+      opacity: 0
+    });
+    ringOuter = new THREE.Mesh(outerRingGeo, ringMat1);
+    ringOuter.rotation.x = Math.PI * 0.28;
+    ringOuter.rotation.y = Math.PI * 0.15;
+    celestialGroup.add(ringOuter);
+
+    // 3. Inner slender orbital ring (tilted at counter angle)
+    var innerRingGeo = new THREE.TorusGeometry(1.42, 0.015, 16, 90);
+    var ringMat2 = new THREE.MeshPhysicalMaterial({
+      color: 0xdfb77c,
+      emissive: 0x261b0c,
+      emissiveIntensity: 0.35,
+      metalness: 0.92,
+      roughness: 0.16,
+      clearcoat: 1,
+      transparent: true,
+      opacity: 0
+    });
+    ringInner = new THREE.Mesh(innerRingGeo, ringMat2);
+    ringInner.rotation.x = -Math.PI * 0.22;
+    ringInner.rotation.z = Math.PI * 0.35;
+    celestialGroup.add(ringInner);
+
+    celestialGroup.scale.setScalar(0.001);
+    scene.add(celestialGroup);
+  } catch (e) {
+    celestialGroup = null;
+  }
 
   var mouseTX = 0, mouseTY = 0;
   window.addEventListener("mousemove", function (e) {
@@ -610,25 +648,39 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
       points.rotation.x = Math.sin(now * 0.00012) * 0.05;
     }
 
-    // the heart mesh grows in around "Officially Together" and keeps glowing brighter through
-    // the countdown and letter — it's the actual 3D model in the scene.
-    if (heartMesh) {
-      var growth = smoothstepClamp(idxFloat, 0.5, 3);
+    // the celestial astrolabe grows in around "Officially Together" and keeps glowing brighter through
+    // the countdown and letter — creating a stunning, modern astronomical centerpiece.
+    if (celestialGroup) {
+      var growth = smoothstepClamp(idxFloat, 0.4, 3);
       var glow = smoothstepClamp(idxFloat, 3, 7);
-      var pulse = withIdleMotion ? 1 + Math.sin(now * 0.0016) * 0.035 : 1;
-      var scale = Math.max(0.001, (0.12 + 0.88 * growth) * pulse);
+      var pulse = withIdleMotion ? 1 + Math.sin(now * 0.0015) * 0.025 : 1;
+      var scale = Math.max(0.001, (0.15 + 0.85 * growth) * pulse);
 
-      heartMesh.scale.setScalar(scale);
-      heartMesh.material.opacity = growth * 0.85;
-      heartMesh.material.emissiveIntensity = 0.22 + 0.45 * glow;
+      celestialGroup.scale.setScalar(scale);
+
+      if (coreMesh) {
+        coreMesh.material.opacity = growth * 0.85;
+        coreMesh.material.emissiveIntensity = 0.35 + 0.5 * glow;
+      }
+      if (ringOuter) {
+        ringOuter.material.opacity = growth * 0.9;
+        ringOuter.material.emissiveIntensity = 0.25 + 0.4 * glow;
+      }
+      if (ringInner) {
+        ringInner.material.opacity = growth * 0.9;
+        ringInner.material.emissiveIntensity = 0.25 + 0.4 * glow;
+      }
 
       if (withIdleMotion) {
-        heartMesh.rotation.y += 0.0045;
-        heartMesh.rotation.x = Math.sin(now * 0.0009) * 0.12 + (frac - 0.5) * 0.3;
-        heartMesh.position.y = Math.sin(now * 0.0006) * 0.09;
+        celestialGroup.rotation.y += 0.0028;
+        celestialGroup.rotation.x = Math.sin(now * 0.0007) * 0.08 + (frac - 0.5) * 0.22;
+        celestialGroup.position.y = Math.sin(now * 0.0005) * 0.08;
 
-        camera.position.x += (mouseTX * 0.4 - camera.position.x) * 0.04;
-        camera.position.y += (-mouseTY * 0.25 - camera.position.y) * 0.04;
+        if (ringOuter) ringOuter.rotation.z += 0.0035;
+        if (ringInner) ringInner.rotation.z -= 0.0045;
+
+        camera.position.x += (mouseTX * 0.35 - camera.position.x) * 0.04;
+        camera.position.y += (-mouseTY * 0.22 - camera.position.y) * 0.04;
         camera.lookAt(0, 0, 0);
       }
     }

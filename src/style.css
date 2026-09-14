@@ -1,16 +1,17 @@
 :root {
-    --void: #0b0b1a;
-    --void-2: #14142c;
-    --void-3: #201c3e;
-    --rose: #f2b6c6;
-    --rose-bright: #f7c9d6;
-    --gold: #e8c07d;
-    --lavender: #b9a6e0;
-    --cream: #f7f1e8;
-    --muted: #9490b3;
-    --line: rgba(247, 241, 232, 0.14);
-    --card-bg: rgba(16, 15, 34, 0.82);
-    --card-border: rgba(242, 182, 198, 0.22);
+    --void: #07080f;
+    --void-2: #0d0f1b;
+    --void-3: #131627;
+    --gold: #dfb77c;
+    --gold-light: #f5e4c3;
+    --rose: #dca8b2;
+    --rose-bright: #ebd0d7;
+    --lavender: #b0a8cc;
+    --cream: #f6f3ee;
+    --muted: #8e8b9f;
+    --line: rgba(246, 243, 238, 0.1);
+    --card-bg: rgba(13, 15, 27, 0.78);
+    --card-border: rgba(223, 183, 124, 0.18);
   }
 
   * { box-sizing: border-box; }
@@ -22,24 +23,24 @@
     margin: 0;
     background: var(--void);
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(185, 166, 224, 0.16), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(176, 168, 204, 0.12), transparent 60%),
       linear-gradient(180deg, var(--void) 0%, var(--void-2) 55%, var(--void-3) 100%);
     background-attachment: fixed;
     color: var(--cream);
-    font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
-    line-height: 1.65;
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
   h1, h2 {
-    font-family: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
-    font-weight: 500;
+    font-family: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
+    font-weight: 600;
     text-wrap: balance;
     margin: 0;
   }
 
-  a { color: var(--rose-bright); }
+  a { color: var(--gold-light); }
 
   :focus-visible {
     outline: 2px solid var(--gold);
@@ -85,35 +86,38 @@
 
   .lock-inner { max-width: 30rem; }
 
-  .lock-heart {
-    font-size: 2.6rem;
-    color: var(--rose-bright);
-    margin: 0.6rem 0 1rem;
-    animation: lock-pulse 2.4s ease-in-out infinite;
+  .lock-icon {
+    font-size: 2rem;
+    color: var(--gold);
+    margin: 0.6rem 0 1.2rem;
+    display: inline-block;
+    animation: lock-glow 3s ease-in-out infinite;
   }
 
-  @keyframes lock-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.85; }
-    50% { transform: scale(1.15); opacity: 1; }
+  @keyframes lock-glow {
+    0%, 100% { opacity: 0.65; transform: scale(1); filter: drop-shadow(0 0 4px rgba(223, 183, 124, 0.3)); }
+    50% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 12px rgba(223, 183, 124, 0.6)); }
   }
 
   .lock-title {
-    font-family: "Fraunces", ui-serif, Georgia, serif;
+    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
     font-weight: 500;
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+    letter-spacing: -0.01em;
     margin: 0 0 1rem;
   }
 
   .lock-message {
     color: var(--muted);
     font-size: 0.98rem;
+    line-height: 1.7;
     margin: 0 0 1.8rem;
   }
 
-  .lock-message strong { color: var(--rose-bright); font-weight: 600; }
+  .lock-message strong { color: var(--gold-light); font-weight: 600; }
 
   @media (prefers-reduced-motion: reduce) {
-    .lock-heart { animation: none; }
+    .lock-icon { animation: none; }
   }
 
   .scene {
@@ -127,39 +131,44 @@
   .hero { justify-content: center; text-align: center; }
   .countdown-scene, .letter-scene { justify-content: center; }
 
-  .hero-inner { max-width: 40rem; }
+  .hero-inner { max-width: 42rem; }
 
   .eyebrow {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 0.75rem;
-    color: var(--lavender);
-    margin: 0 0 1.1rem;
+    letter-spacing: 0.2em;
+    font-size: 0.72rem;
+    color: var(--gold);
+    margin: 0 0 1.2rem;
   }
 
   .names {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    letter-spacing: -0.01em;
+    font-size: clamp(3rem, 7.5vw, 5.4rem);
+    letter-spacing: -0.015em;
+    font-weight: 500;
+    line-height: 1.1;
   }
 
   .names .amp {
     font-style: italic;
-    color: var(--rose-bright);
+    color: var(--gold);
     padding: 0 0.15em;
   }
 
   .since {
-    margin: 1.4rem 0 0.4rem;
-    font-size: 1.15rem;
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.05rem;
     color: var(--cream);
+    opacity: 0.88;
   }
 
   .daycount {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 0.02em;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
   }
 
@@ -169,9 +178,10 @@
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--muted);
   }
@@ -197,10 +207,11 @@
     width: 100%;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 18px;
-    padding: clamp(1.6rem, 3vw, 2.6rem);
+    padding: clamp(1.8rem, 3.2vw, 2.8rem);
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.45);
   }
 
   .card.center { margin: 0 auto; text-align: center; }
@@ -209,24 +220,32 @@
   .card-right { margin-left: auto; }
 
   .tag {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 600;
     font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--gold);
     margin: 0 0 0.8rem;
   }
 
-  .card h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-bottom: 1.1rem; }
+  .card h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.1rem;
+    line-height: 1.2;
+  }
 
   .story {
     margin: 0 0 1.2rem;
     color: var(--cream);
     font-size: 1.02rem;
     max-width: 34rem;
+    line-height: 1.72;
   }
 
-  .story em { color: var(--rose-bright); font-style: normal; }
+  .story em { color: var(--gold-light); font-style: normal; }
 
   .placeholder-note {
     color: var(--muted);
@@ -235,19 +254,19 @@
 
   .photo-frame {
     aspect-ratio: 3 / 4;
-    border: 1.5px dashed rgba(232, 192, 125, 0.45);
-    border-radius: 12px;
-    background: linear-gradient(160deg, rgba(185, 166, 224, 0.12), rgba(242, 182, 198, 0.08));
+    border: 1px solid rgba(223, 183, 124, 0.24);
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgba(176, 168, 204, 0.08), rgba(220, 168, 178, 0.05));
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 1.2rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.3rem;
     color: var(--muted);
     font-size: 0.88rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.55);
   }
 
   .photo-frame:has(img) {
@@ -376,26 +395,29 @@
   .cd-unit { display: flex; flex-direction: column; align-items: center; min-width: 3.6rem; }
 
   .cd-num {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: "Plus Jakarta Sans", sans-serif;
     font-variant-numeric: tabular-nums;
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-size: clamp(1.8rem, 4.5vw, 2.7rem);
     font-weight: 700;
-    color: var(--rose-bright);
+    color: var(--cream);
+    letter-spacing: -0.02em;
   }
 
   .cd-label {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    font-weight: 600;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.3rem;
+    color: var(--gold);
+    margin-top: 0.35rem;
   }
 
   .cd-arrived {
     display: none;
-    font-family: "Fraunces", serif;
-    font-size: 1.3rem;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-style: italic;
     color: var(--gold);
     margin-top: 1.4rem;
   }
@@ -405,13 +427,13 @@
 
   /* ---------- letter ---------- */
   .letter-card { max-width: 34rem; }
-  .letter-body p { margin: 0 0 1.05rem; text-align: left; color: var(--cream); }
+  .letter-body p { margin: 0 0 1.15rem; text-align: left; color: var(--cream); font-size: 1.02rem; line-height: 1.76; }
   .letter-body .sign {
-    margin-top: 1.6rem;
-    font-family: "Fraunces", serif;
+    margin-top: 1.8rem;
+    font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 1.15rem;
-    color: var(--rose-bright);
+    font-size: 1.35rem;
+    color: var(--gold);
     text-align: right;
   }
 
@@ -486,16 +508,17 @@
   }
 
   .lightbox-caption {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
   }
 
   .lightbox-close,
   .lightbox-nav {
     position: absolute;
-    background: rgba(247, 241, 232, 0.08);
+    background: rgba(246, 243, 238, 0.08);
     border: 1px solid var(--card-border);
     color: var(--cream);
     border-radius: 999px;
@@ -511,7 +534,7 @@
 
   .lightbox-close:hover,
   .lightbox-nav:hover {
-    background: rgba(247, 241, 232, 0.16);
+    background: rgba(246, 243, 238, 0.16);
   }
 
   .lightbox-close { top: 1.2rem; right: 1.2rem; }
@@ -532,11 +555,17 @@
     padding-bottom: 8rem;
   }
 
-  .footer-line { font-family: "Fraunces", serif; font-style: italic; font-size: 1.2rem; color: var(--rose-bright); }
+  .footer-line {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+  }
+
   .footer-sub {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
     color: var(--muted);
   }
 
