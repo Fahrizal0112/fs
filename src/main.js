@@ -35,7 +35,7 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "gallery-thumb";
-      btn.setAttribute("aria-label", "Buka foto " + (photo.label || index + 1));
+      btn.setAttribute("aria-label", "View photo " + (photo.label || index + 1));
       var img = document.createElement("img");
       img.src = photo.src;
       img.alt = "";
@@ -56,7 +56,7 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
 
     function applyPhoto(photo) {
       lightboxImg.src = photo.src;
-      lightboxImg.alt = photo.label ? "Foto tanggal " + photo.label : "Foto kenangan";
+      lightboxImg.alt = photo.label ? "Photo from " + photo.label : "Memory photo";
       lightboxCaption.textContent = photo.label || "";
     }
 
@@ -153,9 +153,9 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     var now = new Date();
     var days = Math.max(0, Math.floor((now - start) / 86400000));
     var hero = document.getElementById("dayCount");
-    if (hero) hero.textContent = "Sudah " + days + " hari kita jalan bareng";
+    if (hero) hero.textContent = "We've been together for " + days + " days";
     var inline = document.getElementById("nowDayCount");
-    if (inline) inline.textContent = "sudah " + days + " hari";
+    if (inline) inline.textContent = "it's been " + days + " days";
   }
 
   function updateCountdown() {
@@ -469,14 +469,14 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
 
   var shapePositions = [
     makeScatter(N),                                                   // 0 hero
-    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 pertama ketemu
-    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 mulai dekat
-    makeHeart(N, 0.145, true),                                        // 3 jadian
-    makeBurst(N),                                                     // 4 momen berkesan
-    makeInfinity(N),                                                  // 5 sekarang
-    makeInfinity(N),                                                  // 6 galeri kenangan
+    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 first met
+    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 growing closer
+    makeHeart(N, 0.145, true),                                        // 3 officially together
+    makeBurst(N),                                                     // 4 memorable moment
+    makeInfinity(N),                                                  // 5 present day
+    makeInfinity(N),                                                  // 6 memory gallery
     makeHeart(N, 0.17, false),                                        // 7 countdown
-    makeHeart(N, 0.17, false)                                         // 8 surat
+    makeHeart(N, 0.17, false)                                         // 8 letter
   ];
 
   var shapeColorHex = [0x9fb4ff, 0xb9a6e0, 0xd9a8c9, 0xf2b6c6, 0xe8c07d, 0xcf9fd0, 0xcf9fd0, 0xf7c9d6, 0xf7c9d6];
@@ -610,7 +610,7 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
       points.rotation.x = Math.sin(now * 0.00012) * 0.05;
     }
 
-    // the heart mesh grows in around "Jadian" and keeps glowing brighter through
+    // the heart mesh grows in around "Officially Together" and keeps glowing brighter through
     // the countdown and letter — it's the actual 3D model in the scene.
     if (heartMesh) {
       var growth = smoothstepClamp(idxFloat, 0.5, 3);

@@ -6,3 +6,4 @@ dist
 # nggak perlu ikut ke-commit (ukurannya besar & formatnya belum web-friendly).
 # Foto yang sudah dipilih & dioptimasi ada di src/photos/.
 src/image
+.claude

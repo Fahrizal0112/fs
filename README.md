@@ -1,52 +1,42 @@
 # Fahrizal & Salsa
 
-Halaman web kenangan interaktif untuk anniversary Fahrizal & Salsa (jadian 29 November 2025).
-Dibangun sebagai project **Vite + Three.js** (bukan lagi 1 file HTML biasa) supaya Three.js
-ikut ter-bundle langsung ke dalam build — jadi model 3D-nya nggak bergantung ke CDN eksternal
-dan pasti muncul di browser manapun.
+An interactive memory web page for Fahrizal & Salsa's anniversary (together since November 29, 2025).
+Built as a **Vite + Three.js** project so that Three.js is bundled directly into the build — ensuring the 3D model does not depend on external CDNs and renders reliably across all browsers.
 
 ## Stack
 
 - [Vite](https://vitejs.dev) — dev server & build tool
-- [Three.js](https://threejs.org) — render galaksi bintang & model hati 3D
-- `vite-plugin-singlefile` — build production-nya dijadiin **1 file HTML tunggal** (semua JS/CSS
-  ter-inline), jadi hasil akhirnya tetap bisa langsung dibuka dobel klik atau di-hosting di mana
-  saja tanpa build step tambahan.
+- [Three.js](https://threejs.org) — renders star galaxy & 3D heart model
+- `vite-plugin-singlefile` — compiles production into a **single standalone HTML file** (all JS/CSS inlined), making the output directly openable with a double-click or hostable anywhere without extra build steps.
 
-## Struktur
+## Structure
 
 ```
-index.html       # markup halaman (hero, timeline, countdown, surat)
-src/main.js      # logic: countdown, reveal on scroll, galaksi partikel + model hati 3D (Three.js)
-src/style.css    # semua styling
-src/photos/      # 5 foto yang sudah dipilih & dioptimasi, dipakai di tiap section timeline
+index.html       # page markup (hero, timeline, countdown, letter)
+src/main.js      # logic: countdown, reveal on scroll, particle galaxy + 3D heart model (Three.js)
+src/style.css    # all styling
+src/photos/      # 5 selected & optimized photos used in each timeline section
+src/gallery/     # photos displayed in the memory gallery section
 ```
 
-Folder `src/image/` (kalau ada di komputer kamu) itu tempat naruh foto mentah asli (HEIC/JPG,
-ukuran besar) — sengaja di-gitignore, nggak ikut ke-commit. Kalau mau ganti salah satu foto di
-`src/photos/`, tinggal proses foto barunya (convert HEIC → JPG kalau perlu, resize ke maksimal
-~1400px sisi terpanjang) lalu timpa file yang sesuai di `src/photos/`.
+The `src/image/` folder (if present on your machine) is used to store raw original photos (large HEIC/JPG files) — it is intentionally gitignored. If you want to replace any photo in `src/photos/`, simply process the new photo (convert HEIC → JPG if needed, resize to max ~1400px on the longest edge) and overwrite the corresponding file in `src/photos/`.
 
-## Menjalankan di lokal
+## Running Locally
 
 ```bash
 npm install
-npm run dev       # buka http://localhost:5173, auto-reload tiap edit
+npm run dev       # opens http://localhost:5173 with hot-reload on every edit
 ```
 
-## Build untuk production
+## Production Build
 
 ```bash
-npm run build      # hasil di dist/index.html — 1 file, siap deploy
-npm run preview     # cek hasil build secara lokal
+npm run build      # output in dist/index.html — 1 file, ready to deploy
+npm run preview     # preview build output locally
 ```
 
-`dist/index.html` adalah file tunggal yang sudah membawa semua kode (termasuk Three.js) di
-dalamnya — tinggal upload ke hosting statis mana saja (Vercel, Netlify, GitHub Pages, dll),
-atau dibuka langsung di browser.
+`dist/index.html` is a single file bundled with all code (including Three.js) — simply upload to any static hosting service (Vercel, Netlify, GitHub Pages, etc.), or open directly in your browser.
 
-## Konten yang masih perlu diisi
+## Content to Fill In
 
-Cari `[ISI DI SINI]` di `index.html` — itu placeholder foto & cerita timeline yang masih perlu
-diganti dengan konten asli. Tanggal countdown & "sudah berapa hari bareng" bisa diubah di
-`src/main.js` (variabel `JADIAN_DATE` dan `TARGET_ANNIV`).
+Look for `[FILL IN HERE]` in `index.html` — these are placeholders for timeline stories to be replaced with your personal stories. The countdown and "together since" dates can be adjusted in `src/main.js` (`JADIAN_DATE` and `TARGET_ANNIV` variables).

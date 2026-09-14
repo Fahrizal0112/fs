@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>document.documentElement.classList.add("js");</script>
   <title>Fahrizal &amp; Salsa</title>
-  <meta name="description" content="Halaman kenangan interaktif menuju anniversary pertama Fahrizal & Salsa, dengan galaksi bintang dan model hati 3D (Three.js) yang tumbuh & bercahaya mengikuti scroll." />
+  <meta name="description" content="An interactive memory page leading up to Fahrizal &amp; Salsa's first anniversary, featuring a star galaxy and a 3D heart model (Three.js) that grows &amp; glows as you scroll." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -16,15 +16,15 @@
 
 <div class="lock-screen" id="lockScreen">
   <div class="lock-inner">
-    <p class="eyebrow">sebuah kejutan kecil</p>
+    <p class="eyebrow">a little surprise</p>
     <div class="lock-heart" aria-hidden="true">&#9825;</div>
-    <h1 class="lock-title">Belum Waktunya</h1>
-    <p class="lock-message">Halaman ini kebuka sendiri pas H-1 menuju satu tahun kita — <strong>28 November 2026</strong>. Sabar ya, Sal 🤍</p>
+    <h1 class="lock-title">Not Yet Time</h1>
+    <p class="lock-message">This page will open on the eve of our one-year anniversary — <strong>November 28, 2026</strong>. Be patient, Sal 🤍</p>
     <div class="countdown lock-countdown">
-      <div class="cd-unit"><span class="cd-num" id="lock-days">00</span><span class="cd-label">Hari</span></div>
-      <div class="cd-unit"><span class="cd-num" id="lock-hours">00</span><span class="cd-label">Jam</span></div>
-      <div class="cd-unit"><span class="cd-num" id="lock-mins">00</span><span class="cd-label">Menit</span></div>
-      <div class="cd-unit"><span class="cd-num" id="lock-secs">00</span><span class="cd-label">Detik</span></div>
+      <div class="cd-unit"><span class="cd-num" id="lock-days">00</span><span class="cd-label">Days</span></div>
+      <div class="cd-unit"><span class="cd-num" id="lock-hours">00</span><span class="cd-label">Hours</span></div>
+      <div class="cd-unit"><span class="cd-num" id="lock-mins">00</span><span class="cd-label">Minutes</span></div>
+      <div class="cd-unit"><span class="cd-num" id="lock-secs">00</span><span class="cd-label">Seconds</span></div>
     </div>
   </div>
 </div>
@@ -32,93 +32,93 @@
 <main>
   <section class="scene hero" id="hero">
     <div class="hero-inner">
-      <p class="eyebrow">sebuah cerita kecil, ditulis di antara bintang</p>
+      <p class="eyebrow">a little story, written among the stars</p>
       <h1 class="names">Fahrizal <span class="amp">&amp;</span> Salsa</h1>
-      <p class="since">Bersama sejak 29 November 2025</p>
+      <p class="since">Together since November 29, 2025</p>
       <p class="daycount" id="dayCount" aria-live="off"></p>
-      <div class="scroll-hint"><span></span>Scroll untuk mulai</div>
+      <div class="scroll-hint"><span></span>Scroll to begin</div>
     </div>
   </section>
 
   <section class="scene" id="meet">
     <div class="card card-left">
-      <p class="tag">01 — Awal Mula</p>
-      <h2>Pertama Kali Bertemu</h2>
-      <div class="photo-frame" id="photo-meet"><img src="./src/photos/01-pertama-ketemu.jpg" alt="Fahrizal dan Salsa" loading="lazy" /></div>
-      <p class="story placeholder-note">[ISI DI SINI: ceritain kapan dan di mana kalian pertama kali ketemu, dan hal kecil apa yang bikin momen itu nempel di ingatan sampai sekarang.]</p>
+      <p class="tag">01 — The Beginning</p>
+      <h2>First Time We Met</h2>
+      <div class="photo-frame" id="photo-meet"><img src="./src/photos/01-first-met.jpg" alt="Fahrizal and Salsa" loading="lazy" /></div>
+      <p class="story placeholder-note">[FILL IN HERE: share when and where you first met, and what little thing made that moment unforgettable until now.]</p>
     </div>
   </section>
 
   <section class="scene" id="closer">
     <div class="card card-right">
-      <p class="tag">02 — Semakin Dekat</p>
-      <h2>Mulai Saling Dekat</h2>
-      <div class="photo-frame" id="photo-closer"><img src="./src/photos/02-mulai-dekat.jpg" alt="Fahrizal dan Salsa jalan berdua" loading="lazy" /></div>
-      <p class="story placeholder-note">[ISI DI SINI: cerita fase PDKT kalian — siapa yang mulai duluan, obrolan yang paling diinget, atau momen yang bikin kalian sadar "kayaknya ini beda".]</p>
+      <p class="tag">02 — Growing Closer</p>
+      <h2>Getting Closer</h2>
+      <div class="photo-frame" id="photo-closer"><img src="./src/photos/02-growing-closer.jpg" alt="Fahrizal and Salsa walking together" loading="lazy" /></div>
+      <p class="story placeholder-note">[FILL IN HERE: tell the story of getting to know each other — who made the first move, favorite conversations, or the moment you realized "this feels different".]</p>
     </div>
   </section>
 
   <section class="scene" id="jadian">
     <div class="card card-left">
-      <p class="tag">03 — Resmi Jadian</p>
-      <h2>29 November 2025</h2>
-      <div class="photo-frame" id="photo-jadian"><img src="./src/photos/03-jadian.jpg" alt="Fahrizal dan Salsa berpelukan" loading="lazy" /></div>
-      <p class="story">Di tanggal ini, semuanya jadi resmi. <em>[ISI DI SINI: ceritain gimana momen jadiannya — di mana, gimana suasananya, siapa yang deg-degan duluan.]</em></p>
+      <p class="tag">03 — Officially Together</p>
+      <h2>November 29, 2025</h2>
+      <div class="photo-frame" id="photo-jadian"><img src="./src/photos/03-official.jpg" alt="Fahrizal and Salsa hugging" loading="lazy" /></div>
+      <p class="story">On this date, everything became official. <em>[FILL IN HERE: share how it happened — where it was, the vibe, and who got nervous first.]</em></p>
     </div>
   </section>
 
   <section class="scene" id="funny">
     <div class="card card-right">
-      <p class="tag">04 — Paling Diingat</p>
-      <h2>Momen yang Bikin Ketawa</h2>
-      <div class="photo-frame" id="photo-funny"><img src="./src/photos/04-momen-berkesan.jpg" alt="Fahrizal dan Salsa bikin muka lucu" loading="lazy" /></div>
-      <p class="story placeholder-note">[ISI DI SINI: satu momen paling lucu, paling absurd, atau paling berkesan yang cuma kalian berdua yang ngerti kenapa itu spesial.]</p>
+      <p class="tag">04 — Most Memorable</p>
+      <h2>Moments That Made Us Laugh</h2>
+      <div class="photo-frame" id="photo-funny"><img src="./src/photos/04-memorable-moment.jpg" alt="Fahrizal and Salsa making funny faces" loading="lazy" /></div>
+      <p class="story placeholder-note">[FILL IN HERE: one of the funniest, most absurd, or most memorable moments that only the two of you understand why it was special.]</p>
     </div>
   </section>
 
   <section class="scene" id="now">
     <div class="card card-left">
-      <p class="tag">05 — Sekarang</p>
-      <h2>Agustus 2026</h2>
-      <div class="photo-frame" id="photo-now"><img src="./src/photos/05-sekarang.jpg" alt="Fahrizal dan Salsa terbaru" loading="lazy" /></div>
-      <p class="story">Sampai hari ini, <em id="nowDayCount">sudah sekian hari</em> kita jalan bareng — dan masih pengen lanjut ke hari-hari berikutnya. <span class="placeholder-note">[ISI DI SINI: kabar kalian sekarang, lagi sibuk apa, atau rencana apa yang lagi ditunggu bareng-bareng.]</span></p>
+      <p class="tag">05 — Present Day</p>
+      <h2>August 2026</h2>
+      <div class="photo-frame" id="photo-now"><img src="./src/photos/05-present.jpg" alt="Fahrizal and Salsa recently" loading="lazy" /></div>
+      <p class="story">Up until today, <em id="nowDayCount">it's been many days</em> we've walked together — and we're looking forward to all the days ahead. <span class="placeholder-note">[FILL IN HERE: how you're both doing now, what you've been up to, or what plans you're looking forward to together.]</span></p>
     </div>
   </section>
 
   <section class="scene gallery-scene" id="gallery">
     <div class="card center gallery-card">
-      <p class="tag">06 — Galeri Kenangan</p>
-      <h2>Semua Momen Kita</h2>
-      <p class="story" style="margin-inline:auto;">Dari pertama ketemu sampai sekarang — semua foto, disusun dari yang paling lama. Klik buat lihat lebih besar.</p>
+      <p class="tag">06 — Memory Gallery</p>
+      <h2>All Our Moments</h2>
+      <p class="story" style="margin-inline:auto;">From the first time we met until today — all photos, arranged chronologically. Click to enlarge.</p>
       <div class="gallery-grid" id="galleryGrid"></div>
     </div>
   </section>
 
   <section class="scene countdown-scene" id="countdown-section">
     <div class="card center">
-      <p class="tag">07 — Penantian</p>
-      <h2>Menuju Satu Tahun Kita</h2>
-      <p class="story" style="margin-inline:auto;">29 November 2026 nanti, genap satu tahun perjalanan Fahrizal &amp; Salsa. Hitung mundurnya:</p>
+      <p class="tag">07 — The Wait</p>
+      <h2>Leading Up to Our One Year</h2>
+      <p class="story" style="margin-inline:auto;">On November 29, 2026, it will mark one full year of Fahrizal &amp; Salsa's journey. Counting down:</p>
       <div class="countdown" id="countdown">
-        <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Hari</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Jam</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Menit</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Detik</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Days</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Hours</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Minutes</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Seconds</span></div>
       </div>
-      <p class="cd-arrived" id="cd-arrived-msg">Hari ini harinya. Selamat satu tahun, Sal. 🎉</p>
+      <p class="cd-arrived" id="cd-arrived-msg">Today is the day. Happy one year anniversary, Sal. 🎉</p>
     </div>
   </section>
 
   <section class="scene letter-scene" id="letter">
     <div class="card center letter-card">
-      <p class="tag">08 — Untuk Salsa</p>
-      <h2>Surat Kecil</h2>
+      <p class="tag">08 — For Salsa</p>
+      <h2>A Little Letter</h2>
       <div class="letter-body">
         <p>Sal,</p>
-        <p>Coba deh bayangin, dari semua orang yang pernah lewat di hidup aku, kok ya bisa-bisanya kamu yang paling betah "nyangkut". Padahal udah aku kasih tau juga aku ini rada berantakan, suka lupa charger, dan kalau laper dikit langsung baper. Tapi anehnya kamu tetep di situ-situ aja, sambil ketawain aku tiap kali aku ngelawak garing.</p>
-        <p>Sejak 29 November 2025 itu, banyak hal kecil yang berubah — cara aku liat hari Senin, cara aku nyimpen lagu di playlist, sampai cara aku mikirin "masa depan" yang sekarang isinya kamu terus. Aku nggak akan bilang kamu sempurna, karena kamu berisik kalau ngantuk dan suka salah nyebut judul film, tapi justru itu yang bikin semuanya berasa rumah.</p>
-        <p>Makasih udah nemenin, udah sabar, udah mau direpotin, dan udah tetap milih "tetap di sini" meskipun banyak alasan buat capek. Ke depannya aku cuma pengen satu hal simpel: terus di sebelah kamu, ngerayain hal-hal kecil kayak gini, sampai nanti kita udah nggak ngitung hari lagi karena udah kelamaan bareng.</p>
-        <p>Selamat menuju satu tahun kita, Sal. I love you, banyak banget — bahkan lebih banyak dari stok baper kamu jam 11 malam.</p>
+        <p>Just imagine, out of everyone who has crossed paths in my life, somehow you're the one who stuck around the most. Even though I warned you that I'm a bit messy, always forget my charger, and get cranky whenever I'm hungry. Yet strangely enough, you're still right there, laughing at me every time I tell a corny joke.</p>
+        <p>Since November 29, 2025, so many little things have changed — the way I look at Mondays, how I save songs to my playlists, all the way to how I imagine the "future", which is now completely filled with you. I won't say you're perfect, because you get noisy when you're sleepy and always misremember movie titles, but that's exactly what makes everything feel like home.</p>
+        <p>Thank you for being by my side, for being patient, for putting up with me, and for always choosing to stay here even when there are plenty of reasons to be tired. Looking ahead, I only want one simple thing: to keep staying next to you, celebrating small moments like this, until we don't count the days anymore because we've been together for so long.</p>
+        <p>Happy early one year anniversary, Sal. I love you, so much — even more than your late-night mood swings at 11 PM.</p>
         <p class="sign">— Fahrizal</p>
       </div>
     </div>
@@ -126,18 +126,18 @@
 </main>
 
 <footer class="footer-scene">
-  <p class="footer-line">Dari sini, ceritanya masih terus berlanjut…</p>
-  <p class="footer-sub">dibuat dengan ❤ oleh Fahrizal, untuk Salsa</p>
+  <p class="footer-line">From here, the story goes on…</p>
+  <p class="footer-sub">made with ❤ by Fahrizal, for Salsa</p>
 </footer>
 
 <div class="lightbox" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup">✕</button>
-  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Foto sebelumnya">‹</button>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous photo">‹</button>
   <figure class="lightbox-figure">
     <img class="lightbox-img" id="lightboxImg" alt="" />
     <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
   </figure>
-  <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Foto berikutnya">›</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next photo">›</button>
 </div>
 
   <script type="module" src="/src/main.js"></script>
