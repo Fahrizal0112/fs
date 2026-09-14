@@ -360,65 +360,45 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
     var ctx = c.getContext("2d");
     var g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
     g.addColorStop(0, "rgba(255,255,255,1)");
-    g.addColorStop(0.2, "rgba(255,255,255,0.92)");
-    g.addColorStop(0.5, "rgba(245,230,200,0.35)");
+    g.addColorStop(0.25, "rgba(255,235,242,0.9)");
+    g.addColorStop(0.55, "rgba(242,155,176,0.35)");
     g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, size, size);
     return new THREE.CanvasTexture(c);
   }
 
-  function makeSpiralGalaxy(n) {
+  function heartPoint(t) {
+    var x = 16 * Math.pow(Math.sin(t), 3);
+    var y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    return { x: x, y: y };
+  }
+
+  function makeHeartPoints(n, scale, fill) {
     var arr = new Float32Array(n * 3);
-    var arms = 2;
     for (var i = 0; i < n; i++) {
-      var arm = i % arms;
-      var dist = Math.pow(Math.random(), 0.75) * 4.4 + 0.2;
-      var angle = dist * 1.6 + arm * Math.PI + (Math.random() - 0.5) * 0.38;
-      var r = 0.95 + Math.random() * 0.1;
-      arr[i * 3] = Math.cos(angle) * dist * r;
-      arr[i * 3 + 1] = Math.sin(angle) * dist * 0.78 * r;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * (0.85 / (dist * 0.45 + 0.8));
+      var t = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.04;
+      var p = heartPoint(t);
+      var r = fill ? 0.9 + Math.random() * 0.22 : 0.98 + Math.random() * 0.06;
+      arr[i * 3] = p.x * scale * r;
+      arr[i * 3 + 1] = p.y * scale * r;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.65;
     }
     return arr;
   }
 
-  function makeOrbitalRing(n) {
+  function makeInfinityHeart(n) {
     var arr = new Float32Array(n * 3);
+    var a = 3.2;
     for (var i = 0; i < n; i++) {
-      var angle = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.05;
-      var radius = i % 2 === 0 ? 3.2 : 2.4;
-      var jitter = 0.94 + Math.random() * 0.12;
-      arr[i * 3] = Math.cos(angle) * radius * jitter;
-      arr[i * 3 + 1] = Math.sin(angle) * radius * 0.65 * jitter;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
-    }
-    return arr;
-  }
-
-  function makeConstellationField(n) {
-    var arr = new Float32Array(n * 3);
-    for (var i = 0; i < n; i++) {
-      var theta = (i / n) * Math.PI * 2 * 7;
-      var phi = Math.acos(2 * (i / n) - 1);
-      var r = 3.6 + Math.random() * 1.6;
-      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.75;
-      arr[i * 3 + 2] = r * Math.cos(phi) * 0.6;
-    }
-    return arr;
-  }
-
-  function makeRadiantCore(n) {
-    var arr = new Float32Array(n * 3);
-    for (var i = 0; i < n; i++) {
-      var u = Math.random(), v = Math.random();
-      var theta = u * Math.PI * 2;
-      var phi = Math.acos(2 * v - 1);
-      var r = Math.pow(Math.random(), 1.8) * 3.2 + 0.3;
-      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.85;
-      arr[i * 3 + 2] = r * Math.cos(phi) * 0.7;
+      var t = (i / n) * Math.PI * 2;
+      var denom = 1 + Math.sin(t) * Math.sin(t);
+      var x = (a * Math.cos(t)) / denom;
+      var y = (a * Math.sin(t) * Math.cos(t)) / denom;
+      var r = 0.92 + Math.random() * 0.18;
+      arr[i * 3] = x * r;
+      arr[i * 3 + 1] = y * r * 1.15;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 0.6;
     }
     return arr;
   }
@@ -489,18 +469,18 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
   }
 
   var shapePositions = [
-    makeScatter(N),                                                   // 0 hero: deep cosmos
-    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 first met: dual star clusters
-    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 growing closer: cosmic bridge
-    makeSpiralGalaxy(N),                                              // 3 officially together: spiral galaxy
-    makeBurst(N),                                                     // 4 memorable moment: stellar sparkle
-    makeOrbitalRing(N),                                               // 5 present day: celestial orbit
-    makeConstellationField(N),                                        // 6 memory gallery: constellation field
-    makeRadiantCore(N),                                               // 7 countdown: radiant core
-    makeRadiantCore(N)                                                // 8 letter: warm starlight canopy
+    makeScatter(N),                                                   // 0 hero: stardust cosmos
+    makeTwoClusters(N, -3.1, 0.35, -0.4, 3.0, -0.3, 0.5, 1.05),        // 1 first met: two stars approaching
+    makeBridgingClusters(N, -1.3, 0.25, -0.3, 1.3, -0.2, 0.35, 0.95),  // 2 growing closer: intertwined stardust bridge
+    makeHeartPoints(N, 0.155, true),                                  // 3 officially together: radiant stardust heart
+    makeBurst(N),                                                     // 4 memorable moment: playful stardust sparkle
+    makeInfinityHeart(N),                                             // 5 present day: flowing infinity-love loop
+    makeInfinityHeart(N),                                             // 6 memory gallery: enduring love constellation
+    makeHeartPoints(N, 0.175, false),                                 // 7 countdown: pulsing heart halo
+    makeHeartPoints(N, 0.175, false)                                  // 8 letter: embracing stardust heart
   ];
 
-  var shapeColorHex = [0xd4deee, 0xc2d0ea, 0xd0c5e2, 0xdfb77c, 0xf6deaa, 0xdfb77c, 0xc8bed8, 0xecd5ab, 0xf2dfc0];
+  var shapeColorHex = [0xdbe3f3, 0xd0c4e8, 0xe8bad1, 0xf6a8ba, 0xf7d299, 0xe8bad1, 0xdfb77c, 0xf6b5c4, 0xf6b5c4];
   var shapeColors = shapeColorHex.map(function (h) { return new THREE.Color(h); });
 
   var geometry = new THREE.BufferGeometry();
@@ -522,79 +502,90 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
   points.renderOrder = 1;
   scene.add(points);
 
-  /* ---------- the 3D model: celestial astrolabe with starlight core & orbital rings ---------- */
-  var ambientLight = new THREE.AmbientLight(0x403856, 1.2);
+  /* ---------- the 3D model: luminous translucent crystal heart with gentle heartbeat ---------- */
+  var ambientLight = new THREE.AmbientLight(0x4a2e42, 1.2);
   scene.add(ambientLight);
 
-  var keyLight = new THREE.PointLight(0xdfb77c, 2.4, 32, 2);
-  keyLight.position.set(3.5, 3.8, 5.2);
+  var keyLight = new THREE.PointLight(0xf7d299, 2.5, 30, 2);
+  keyLight.position.set(3.4, 3.6, 5.2);
   scene.add(keyLight);
 
-  var rimLight = new THREE.PointLight(0xa59ac8, 1.5, 32, 2);
-  rimLight.position.set(-4.2, -2.5, 3.2);
+  var rimLight = new THREE.PointLight(0xf6a8ba, 1.6, 30, 2);
+  rimLight.position.set(-4.2, -2.4, 3.5);
   scene.add(rimLight);
 
-  var celestialGroup = new THREE.Group();
-  var coreMesh = null;
-  var ringOuter = null;
-  var ringInner = null;
+  function smoothHeartShape() {
+    var shape = new THREE.Shape();
+    shape.moveTo(0, 0.65);
+    shape.bezierCurveTo(0.2, 1.4, 1.45, 1.4, 1.45, 0.68);
+    shape.bezierCurveTo(1.45, 0.12, 0.75, -0.55, 0, -1.35);
+    shape.bezierCurveTo(-0.75, -0.55, -1.45, 0.12, -1.45, 0.68);
+    shape.bezierCurveTo(-1.45, 1.4, -0.2, 1.4, 0, 0.65);
+    return shape;
+  }
+
+  var heartGroup = new THREE.Group();
+  var heartMesh = null;
+  var heartHalo = null;
 
   try {
-    // 1. Central luminous starlight core
-    var coreGeo = new THREE.IcosahedronGeometry(0.75, 3);
-    var coreMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xdfb77c,
-      emissive: 0x422f12,
-      emissiveIntensity: 0.5,
-      metalness: 0.72,
-      roughness: 0.22,
-      clearcoat: 0.95,
-      clearcoatRoughness: 0.18,
-      transparent: true,
-      opacity: 0
+    var heartGeo = new THREE.ExtrudeGeometry(smoothHeartShape(), {
+      depth: 0.35,
+      bevelEnabled: true,
+      bevelSegments: 8,
+      steps: 2,
+      bevelSize: 0.28,
+      bevelThickness: 0.28,
+      curveSegments: 32
     });
-    coreMesh = new THREE.Mesh(coreGeo, coreMaterial);
-    coreMesh.renderOrder = 0;
-    celestialGroup.add(coreMesh);
+    heartGeo.center();
+    heartGeo.scale(1.5, 1.5, 1.5);
 
-    // 2. Outer slender orbital ring
-    var outerRingGeo = new THREE.TorusGeometry(2.05, 0.018, 16, 120);
-    var ringMat1 = new THREE.MeshPhysicalMaterial({
-      color: 0xebd0d7,
-      emissive: 0x221319,
+    var heartMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xf492a8,
+      emissive: 0x4a1220,
       emissiveIntensity: 0.35,
-      metalness: 0.9,
+      metalness: 0.12,
       roughness: 0.18,
-      clearcoat: 1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.12,
+      transmission: 0.35,
       transparent: true,
       opacity: 0
     });
-    ringOuter = new THREE.Mesh(outerRingGeo, ringMat1);
-    ringOuter.rotation.x = Math.PI * 0.28;
-    ringOuter.rotation.y = Math.PI * 0.15;
-    celestialGroup.add(ringOuter);
 
-    // 3. Inner slender orbital ring (tilted at counter angle)
-    var innerRingGeo = new THREE.TorusGeometry(1.42, 0.015, 16, 90);
-    var ringMat2 = new THREE.MeshPhysicalMaterial({
-      color: 0xdfb77c,
-      emissive: 0x261b0c,
-      emissiveIntensity: 0.35,
-      metalness: 0.92,
-      roughness: 0.16,
-      clearcoat: 1,
+    heartMesh = new THREE.Mesh(heartGeo, heartMaterial);
+    heartMesh.renderOrder = 0;
+    heartGroup.add(heartMesh);
+
+    // subtle stardust ember halo orbiting the crystal heart
+    var haloCount = 80;
+    var haloGeo = new THREE.BufferGeometry();
+    var haloPos = new Float32Array(haloCount * 3);
+    for (var hi = 0; hi < haloCount; hi++) {
+      var ha = (hi / haloCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      var hr = 2.4 + Math.random() * 1.2;
+      haloPos[hi * 3] = Math.cos(ha) * hr;
+      haloPos[hi * 3 + 1] = Math.sin(ha) * hr * 0.85;
+      haloPos[hi * 3 + 2] = (Math.random() - 0.5) * 1.6;
+    }
+    haloGeo.setAttribute("position", new THREE.BufferAttribute(haloPos, 3));
+    var haloMat = new THREE.PointsMaterial({
+      size: 0.08,
+      map: dotTexture(),
       transparent: true,
-      opacity: 0
+      opacity: 0.75,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      color: new THREE.Color(0xf6b5c4)
     });
-    ringInner = new THREE.Mesh(innerRingGeo, ringMat2);
-    ringInner.rotation.x = -Math.PI * 0.22;
-    ringInner.rotation.z = Math.PI * 0.35;
-    celestialGroup.add(ringInner);
+    heartHalo = new THREE.Points(haloGeo, haloMat);
+    heartGroup.add(heartHalo);
 
-    celestialGroup.scale.setScalar(0.001);
-    scene.add(celestialGroup);
+    heartGroup.scale.setScalar(0.001);
+    scene.add(heartGroup);
   } catch (e) {
-    celestialGroup = null;
+    heartGroup = null;
   }
 
   var mouseTX = 0, mouseTY = 0;
@@ -648,36 +639,36 @@ var galleryModules = import.meta.glob("./gallery/*.jpg", { eager: true, import: 
       points.rotation.x = Math.sin(now * 0.00012) * 0.05;
     }
 
-    // the celestial astrolabe grows in around "Officially Together" and keeps glowing brighter through
-    // the countdown and letter — creating a stunning, modern astronomical centerpiece.
-    if (celestialGroup) {
+    // the crystal heart blooms around "Officially Together" and pulses with a realistic, warm heartbeat
+    // through the countdown and letter — keeping the anniversary romantic and alive.
+    if (heartGroup) {
       var growth = smoothstepClamp(idxFloat, 0.4, 3);
       var glow = smoothstepClamp(idxFloat, 3, 7);
-      var pulse = withIdleMotion ? 1 + Math.sin(now * 0.0015) * 0.025 : 1;
-      var scale = Math.max(0.001, (0.15 + 0.85 * growth) * pulse);
 
-      celestialGroup.scale.setScalar(scale);
+      // Realistic lub-dub human heartbeat rhythm
+      var beat1 = Math.sin(now * 0.0026);
+      var beat2 = Math.sin(now * 0.0026 + 0.38);
+      var lub = Math.pow(Math.max(0, beat1), 5) * 0.05;
+      var dub = Math.pow(Math.max(0, beat2), 5) * 0.035;
+      var pulse = withIdleMotion ? 1 + lub + dub : 1;
+      var scale = Math.max(0.001, (0.18 + 0.82 * growth) * pulse);
 
-      if (coreMesh) {
-        coreMesh.material.opacity = growth * 0.85;
-        coreMesh.material.emissiveIntensity = 0.35 + 0.5 * glow;
-      }
-      if (ringOuter) {
-        ringOuter.material.opacity = growth * 0.9;
-        ringOuter.material.emissiveIntensity = 0.25 + 0.4 * glow;
-      }
-      if (ringInner) {
-        ringInner.material.opacity = growth * 0.9;
-        ringInner.material.emissiveIntensity = 0.25 + 0.4 * glow;
+      heartGroup.scale.setScalar(scale);
+
+      if (heartMesh) {
+        heartMesh.material.opacity = growth * 0.92;
+        heartMesh.material.emissiveIntensity = 0.3 + 0.45 * glow;
       }
 
       if (withIdleMotion) {
-        celestialGroup.rotation.y += 0.0028;
-        celestialGroup.rotation.x = Math.sin(now * 0.0007) * 0.08 + (frac - 0.5) * 0.22;
-        celestialGroup.position.y = Math.sin(now * 0.0005) * 0.08;
+        heartGroup.rotation.y += 0.0035;
+        heartGroup.rotation.x = Math.sin(now * 0.0008) * 0.1 + (frac - 0.5) * 0.25;
+        heartGroup.position.y = Math.sin(now * 0.0006) * 0.08;
 
-        if (ringOuter) ringOuter.rotation.z += 0.0035;
-        if (ringInner) ringInner.rotation.z -= 0.0045;
+        if (heartHalo) {
+          heartHalo.rotation.y -= 0.004;
+          heartHalo.rotation.z += 0.002;
+        }
 
         camera.position.x += (mouseTX * 0.35 - camera.position.x) * 0.04;
         camera.position.y += (-mouseTY * 0.22 - camera.position.y) * 0.04;

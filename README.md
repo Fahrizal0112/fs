@@ -6,14 +6,14 @@ Built as a **Vite + Three.js** project so that Three.js is bundled directly into
 ## Stack
 
 - [Vite](https://vitejs.dev) — dev server & build tool
-- [Three.js](https://threejs.org) — renders star galaxy & 3D celestial astrolabe
+- [Three.js](https://threejs.org) — renders star galaxy & luminous 3D crystal heart
 - `vite-plugin-singlefile` — compiles production into a **single standalone HTML file** (all JS/CSS inlined), making the output directly openable with a double-click or hostable anywhere without extra build steps.
 
 ## Structure
 
 ```
 index.html       # page markup (hero, timeline, countdown, letter)
-src/main.js      # logic: countdown, reveal on scroll, particle galaxy + 3D celestial astrolabe (Three.js)
+src/main.js      # logic: countdown, reveal on scroll, particle galaxy + 3D luminous crystal heart (Three.js)
 src/style.css    # all styling
 src/photos/      # 5 selected & optimized photos used in each timeline section
 src/gallery/     # photos displayed in the memory gallery section

@@ -1,17 +1,17 @@
 :root {
-    --void: #07080f;
-    --void-2: #0d0f1b;
-    --void-3: #131627;
-    --gold: #dfb77c;
-    --gold-light: #f5e4c3;
-    --rose: #dca8b2;
-    --rose-bright: #ebd0d7;
-    --lavender: #b0a8cc;
-    --cream: #f6f3ee;
-    --muted: #8e8b9f;
-    --line: rgba(246, 243, 238, 0.1);
-    --card-bg: rgba(13, 15, 27, 0.78);
-    --card-border: rgba(223, 183, 124, 0.18);
+    --void: #090812;
+    --void-2: #120e1f;
+    --void-3: #1a142c;
+    --rose: #f29bb0;
+    --rose-bright: #f6b5c4;
+    --gold: #e8c48a;
+    --gold-light: #f7e6c9;
+    --lavender: #b9aee0;
+    --cream: #fbf7f2;
+    --muted: #9c95ab;
+    --line: rgba(251, 247, 242, 0.1);
+    --card-bg: rgba(16, 13, 28, 0.82);
+    --card-border: rgba(242, 155, 176, 0.22);
   }
 
   * { box-sizing: border-box; }
@@ -23,7 +23,7 @@
     margin: 0;
     background: var(--void);
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(176, 168, 204, 0.12), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(242, 155, 176, 0.14), transparent 60%),
       linear-gradient(180deg, var(--void) 0%, var(--void-2) 55%, var(--void-3) 100%);
     background-attachment: fixed;
     color: var(--cream);
@@ -34,13 +34,13 @@
   }
 
   h1, h2 {
-    font-family: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
+    font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
     font-weight: 600;
     text-wrap: balance;
     margin: 0;
   }
 
-  a { color: var(--gold-light); }
+  a { color: var(--rose-bright); }
 
   :focus-visible {
     outline: 2px solid var(--gold);
@@ -86,23 +86,26 @@
 
   .lock-inner { max-width: 30rem; }
 
-  .lock-icon {
-    font-size: 2rem;
-    color: var(--gold);
+  .lock-heart {
+    font-size: 2.6rem;
+    color: var(--rose-bright);
     margin: 0.6rem 0 1.2rem;
     display: inline-block;
-    animation: lock-glow 3s ease-in-out infinite;
+    animation: lock-heartbeat 2.4s ease-in-out infinite;
   }
 
-  @keyframes lock-glow {
-    0%, 100% { opacity: 0.65; transform: scale(1); filter: drop-shadow(0 0 4px rgba(223, 183, 124, 0.3)); }
-    50% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 12px rgba(223, 183, 124, 0.6)); }
+  @keyframes lock-heartbeat {
+    0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 6px rgba(246, 181, 196, 0.4)); }
+    14% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 16px rgba(246, 181, 196, 0.8)); }
+    28% { transform: scale(1.04); opacity: 0.9; }
+    42% { transform: scale(1.12); opacity: 1; filter: drop-shadow(0 0 14px rgba(246, 181, 196, 0.7)); }
+    70% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 6px rgba(246, 181, 196, 0.4)); }
   }
 
   .lock-title {
-    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
-    font-weight: 500;
-    font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+    font-family: "Playfair Display", ui-serif, Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5.5vw, 3rem);
     letter-spacing: -0.01em;
     margin: 0 0 1rem;
   }
@@ -114,10 +117,10 @@
     margin: 0 0 1.8rem;
   }
 
-  .lock-message strong { color: var(--gold-light); font-weight: 600; }
+  .lock-message strong { color: var(--rose-bright); font-weight: 600; }
 
   @media (prefers-reduced-motion: reduce) {
-    .lock-icon { animation: none; }
+    .lock-heart { animation: none; }
   }
 
   .scene {
@@ -144,15 +147,16 @@
   }
 
   .names {
+    font-family: "Playfair Display", serif;
     font-size: clamp(3rem, 7.5vw, 5.4rem);
     letter-spacing: -0.015em;
-    font-weight: 500;
-    line-height: 1.1;
+    font-weight: 600;
+    line-height: 1.15;
   }
 
   .names .amp {
     font-style: italic;
-    color: var(--gold);
+    color: var(--rose-bright);
     padding: 0 0.15em;
   }
 
@@ -415,7 +419,7 @@
 
   .cd-arrived {
     display: none;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Playfair Display", serif;
     font-size: 1.45rem;
     font-style: italic;
     color: var(--gold);
@@ -430,10 +434,10 @@
   .letter-body p { margin: 0 0 1.15rem; text-align: left; color: var(--cream); font-size: 1.02rem; line-height: 1.76; }
   .letter-body .sign {
     margin-top: 1.8rem;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Playfair Display", serif;
     font-style: italic;
     font-size: 1.35rem;
-    color: var(--gold);
+    color: var(--rose-bright);
     text-align: right;
   }
 
@@ -556,10 +560,10 @@
   }
 
   .footer-line {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Playfair Display", serif;
     font-style: italic;
     font-size: 1.4rem;
-    color: var(--gold-light);
+    color: var(--rose-bright);
   }
 
   .footer-sub {
