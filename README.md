@@ -37,6 +37,6 @@ npm run preview     # preview build output locally
 
 `dist/index.html` is a single file bundled with all code (including Three.js) — simply upload to any static hosting service (Vercel, Netlify, GitHub Pages, etc.), or open directly in your browser.
 
-## Content to Fill In
+## Personalization
 
-Look for `[FILL IN HERE]` in `index.html` — these are placeholders for timeline stories to be replaced with your personal stories. The countdown and "together since" dates can be adjusted in `src/main.js` (`JADIAN_DATE` and `TARGET_ANNIV` variables).
+The timeline stories in `index.html` are written to match the photos in `src/photos/`, but can be further customized anytime. The countdown and "together since" dates can be adjusted in `src/main.js` (`JADIAN_DATE` and `TARGET_ANNIV` variables).
